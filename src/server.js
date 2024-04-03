@@ -14,13 +14,13 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Definir las rutas
-const indexRouter = require('./src/routes/index');
-const recImagenesDashboardRouter = require('./src/routes/rec_imagenes_dashboard');
-const ayudaRouter = require('./src/routes/ayuda');
+const indexRouter = require('./routes/index');
+const recImagenesDashboardRouter = require('./routes/rec_imagenes_dashboard');
+const ayudaRouter = require('./routes/ayuda');
 
 app.use('/', indexRouter);
-app.use('/rec_imagenes_dashboard', recImagenesDashboardRouter);
-app.use('/ayuda', ayudaRouter);
+//app.use('/rec_imagenes_dashboard', recImagenesDashboardRouter);
+//app.use('/ayuda', ayudaRouter);
 
 // Iniciar el servidor
 app.listen(PORT, () => {
