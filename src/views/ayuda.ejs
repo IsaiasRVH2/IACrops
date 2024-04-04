@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ayuda - Chat con Google Generative AI</title>
+    <style>
+        /* Estilos CSS */
+    </style>
+</head>
+<body>
+    <h1>Ayuda - Chat con Google Generative AI</h1>
+    <ul id="conversation"></ul>
+    <div id="footer">
+        <!-- Cuadro de texto para el mensaje del usuario -->
+        <textarea id="userInput" placeholder="Escribe tu mensaje aquí"></textarea>
+        <button onclick="sendMessage()">Enviar</button>
+    </div>
+
+    <!-- Script para manejar la funcionalidad del chat -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/3.0.2/marked.min.js"></script>
+    <script>
+        // Función para enviar mensajes
+        async function sendMessage() {
+            const userInput = document.getElementById('userInput').value.trim();
+            if (!userInput) {
+                alert("Por favor ingresa un mensaje");
+                return;
+            }
+
+            const conversation = document.getElementById('conversation');
+
+            // Crear elemento de mensaje de usuario y agregarlo a la conversación
+            const userMessageItem = document.createElement('li');
+            userMessageItem.classList.add('user-message');
+            userMessageItem.innerHTML = `<span class="bold">Tú:</span><br>${userInput}`;
+            conversation.appendChild(userMessageItem);
+
+            // Enviar solicitud POST al servidor para obtener la respuesta
+            const response = await fetch('/sendMessage', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ message: userInput })
+            });
+
+            // Limpiar el cuadro de texto después de enviar el mensaje
+            document.getElementById('userInput').value = '';
+
+            // Obtener la respuesta del servidor y agregarla a la conversación
+            const responseData = await response.text();
+            const modelResponseItem = document.createElement('li');
+            modelResponseItem.classList.add('model-response');
+            modelResponseItem.innerHTML = `<span class="bold">Javi:</span><br>${marked(responseData)}`;
+            conversation.appendChild(modelResponseItem);
+
+            // Desplazar la conversación hacia abajo para mostrar la última respuesta
+            conversation.scrollTop = conversation.scrollHeight;
+        }
+
+        // Event listener para el evento keydown en el cuadro de texto
+        document.getElementById('userInput').addEventListener('keydown', function(event) {
+            if (event.key === 'Enter') {
+                sendMessage(); // Llama a sendMessage cuando se presiona Enter
+            }
+        });
+
+        // Llenar el cuadro de texto con imgPath si se recibe en la solicitud POST
+        <% if (imgPath) { %>
+            document.getElementById('userInput').value = '<%= imgPath %>';
+        <% } %>
+    </script>
+</body>
+</html>

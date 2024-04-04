@@ -24,7 +24,7 @@ const ayudaRouter = require('./routes/ayuda');
 
 app.use('/', indexRouter);
 app.use('/rec_imagenes_dashboard', recImagenesDashboardRouter);
-//app.use('/ayuda', ayudaRouter);
+app.use('/ayuda', ayudaRouter);
 
 // Iniciar el servidor
 app.listen(PORT, () => {
