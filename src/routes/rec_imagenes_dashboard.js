@@ -1,12 +1,13 @@
-// routes/rec_imagenes_dashboard.js
+// En tu archivo de ruta, por ejemplo, rec_imagenes_dashboard.js
 
 const express = require('express');
-const path = require('path');
 const router = express.Router();
 
-// Ruta para cargar la página rec_imagenes_dashboard
-router.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, '../public/rec_imagenes_dashboard.html'));
+router.post('/', (req, res) => {
+    const imgPath = req.body.img_path;
+    
+    // Renderizar la plantilla EJS 'rec_imagenes_dashboard.ejs' y pasar la ruta de la imagen como variable
+    res.render('rec_imagenes_dashboard', { imgPath: imgPath });
 });
 
 module.exports = router;

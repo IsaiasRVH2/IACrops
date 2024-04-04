@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Informe del Cultivo</title>
+    
+</head>
+<body>
+    <header>
+        <h1>Informe del Cultivo</h1>
+    </header>
+
+    <main>
+        <div id="image-path">
+            <!-- Aquí se mostrará la ruta de la imagen recibida -->
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Tu Empresa</p>
+    </footer>
+
+    <script>
+        // Obtener la ruta de la imagen del campo img_path enviado por POST
+        const imgPath = '<%= imgPath %>'; // Esta es una variable de plantilla EJS, asegúrate de que esté configurada en tu servidor
+
+        // Mostrar la ruta de la imagen en la página
+        const imagePathElement = document.getElementById('image-path');
+        imagePathElement.textContent = `Ruta de la imagen: ${imgPath}`;
+    </script>
+</body>
+</html>

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Informe del Cultivo</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+        header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        main {
+            text-align: center;
+        }
+        #image-path {
+            margin-bottom: 20px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #10A51F;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        button:hover {
+            background-color: #0b7e14;
+        }
+        footer {
+            margin-top: auto;
+            text-align: center;
+            background-color: #f8f9fa;
+            width: 100%;
+            padding: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <!-- Agregar la imagen de la hoja de manzano a la izquierda del título -->
+        <img src="./public/assets/images/1013.JPEG" alt="Hoja de Manzano" style="width: 50px; height: 50px; margin-right: 10px;">
+        <h1>Informe de Manzano</h1>
+    </header>
+
+    <main>
+        <div id="image-path">
+            Diagnóstico: <%= imgPath %>
+        </div>
+        
+        <form id="ayuda-form" action="/ayuda" method="post" style="display: none;">
+            <input type="hidden" name="img_path" id="img-path-input">
+        </form>
+        
+        <button id="ayuda-button">Solicitar Ayuda</button>
+
+    </main>
+
+    <footer>
+        <p>&copy; 2024 IACrops</p>
+    </footer>
+    
+    
+    <script>
+        document.getElementById('ayuda-button').addEventListener('click', function() {
+            const imgPath = '<%= imgPath %>';
+            document.getElementById('img-path-input').value = "Se ha detectado que la hoja de manzano se encuentra " + imgPath.toLowerCase() + ". ¿Podrías darme recomendaciones?";
+            document.getElementById('ayuda-form').submit();
+        });
+    </script>
+</body>
+</html>

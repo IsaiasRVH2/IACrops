@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IACrops Asistente Virtual</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            position: relative;
+            min-height: 100vh;
+            background-color: #f0f0f0;
+        }
+        header {
+            text-align: center;
+            padding: 20px;
+            background-color: #10A51F;
+            color: #fff;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        header h1 {
+            font-size: 36px;
+            margin-bottom: 5px;
+        }
+        header p {
+            font-size: 14px;
+            opacity: 0.7;
+        }
+        #footer {
+            position: fixed;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            background-color: #f9f9f9;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+        }
+        textarea {
+            width: calc(100% - 120px);
+            height: 30px;
+            resize: none;
+            border-radius: 5px;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #10A51F;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        button:hover {
+            background-color: #0b7e14;
+        }
+        #conversation {
+            max-height: calc(100vh - 160px);
+            overflow-y: auto;
+            padding: 0;
+            margin: 0;
+            list-style-type: none;
+        }
+        .user-message,
+        .model-response {
+            margin-bottom: 10px;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        .user-message {
+            background-color: #f1f1f1;
+        }
+        .model-response {
+            background-color: #e0e0e0;
+        }
+        .bold {
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>IACrops Asistente Virtual</h1>
+        <p>Powered by Gemini</p>
+    </header>
+    <ul id="conversation"></ul>
+    <div id="footer">
+        <textarea id="userInput" placeholder="Escribe tu mensaje aquí"></textarea>
+        <button onclick="sendMessage()">Enviar</button>
+    </div>
+
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/3.0.2/marked.min.js"></script>
+    <script>
+        var imgPath = '<%= typeof imgPath !== "undefined" ? imgPath : "" %>';
+
+        // Verificar si imgPath está definido
+        if (imgPath) {
+            // Si imgPath está definido, mostrar su valor
+            document.getElementById('userInput').value = imgPath;
+            sendMessage();
+        } 
+
+        async function sendMessage() {
+            const userInput = document.getElementById('userInput').value.trim();
+            if (!userInput) {
+                alert("Por favor ingresa un mensaje");
+                return;
+            }
+
+            const conversation = document.getElementById('conversation');
+
+            const userMessageItem = document.createElement('li');
+            userMessageItem.classList.add('user-message');
+            userMessageItem.innerHTML = `<span class="bold">Tú:</span><br>${userInput}`;
+            conversation.appendChild(userMessageItem);
+
+            const response = await fetch('/ayuda/sendMessage', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ message: userInput })
+            });
+            // Limpiar el cuadro de texto después de enviar el mensaje
+            document.getElementById('userInput').value = '';
+            const responseData = await response.text();
+            const modelResponseItem = document.createElement('li');
+            modelResponseItem.classList.add('model-response');
+            modelResponseItem.innerHTML = `<span class="bold">Javi:</span><br>${marked(responseData)}`;
+            conversation.appendChild(modelResponseItem);
+
+            // Desplazar la conversación hacia abajo para mostrar la última respuesta
+            conversation.scrollTop = conversation.scrollHeight;
+        }
+
+        // Event listener para el evento keydown en el cuadro de texto
+        document.getElementById('userInput').addEventListener('keydown', function(event) {
+            if (event.key === 'Enter') {
+                sendMessage(); // Llama a sendMessage cuando se presiona Enter
+            }
+        });
+    </script>
+</body>
+</html>
