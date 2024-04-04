@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cargar Imagen - Proyecto</title>
-    <link rel="stylesheet" href="assets/styles.css">
+    
 </head>
 <body>
     <header>
@@ -12,8 +12,8 @@
     </header>
 
     <main>
-        <form id="image-form" enctype="multipart/form-data">
-            <input type="file" id="image-input" name="image" accept="image/*" required>
+        <form id="image-form" action="/rec_imagenes_dashboard" method="POST">
+            <input type="text" id="image-input" name="img_path" placeholder="Nombre del archivo" required>
             <button type="submit">Confirmar</button>
         </form>
     </main>
@@ -25,26 +25,29 @@
     <script>
         document.getElementById('image-form').addEventListener('submit', function(event) {
             event.preventDefault(); // Evitar que se envíe el formulario automáticamente
-
-            const imageInput = document.getElementById('image-input');
-            if (imageInput.files.length > 0) {
-                // Si se ha seleccionado una imagen, enviar solicitud POST a la página de informe
-                fetch('/informe', {
+    
+            const imgPathInput = document.getElementById('image-input');
+            const imgPath = imgPathInput.value;
+    
+            if (imgPath.trim() !== '') {
+                // Si se ha ingresado un nombre de archivo, enviar solicitud POST a la página de informe
+                fetch('/rec_imagenes_dashboard', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'text/plain'
                     },
-                    body: 'Se envió la respuesta'
+                    body: imgPath
                 })
                 .then(response => {
                     // Redirigir a la página de informe cuando se haya enviado la respuesta
-                    window.location.href = '/informe';
+                    window.location.href = '/rec_imagenes_dashboard';
                 })
                 .catch(error => console.error('Error al enviar la respuesta:', error));
             } else {
-                console.log('Por favor, selecciona una imagen.');
+                console.log('Por favor, ingresa un nombre de archivo.');
             }
         });
     </script>
+    
 </body>
 </html>

@@ -6,6 +6,10 @@ const path = require('path');
 // Crear una instancia de Express
 const app = express();
 
+// Configurar el motor de plantillas EJS
+app.set('view engine', 'ejs'); // Establecer el motor de plantillas como EJS
+app.set('views', path.join(__dirname, 'views')); // Establecer la ruta de las vistas
+
 // Configurar el puerto del servidor
 const PORT = process.env.PORT || 3000;
 
