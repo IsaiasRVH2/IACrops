@@ -12,6 +12,11 @@
     </header>
 
     <main>
+        <input type="file" id="fileInput" accept="image/*">
+        <br>
+        <button onclick="predict()">Generar JSON</button>
+        <br>
+
         <form id="image-form" action="/rec_imagenes_dashboard" method="POST">
             <input type="text" id="image-input" name="img_path" placeholder="Nombre del archivo" required>
             <button type="submit">Confirmar</button>
@@ -21,6 +26,74 @@
     <footer>
         <p>&copy; 2024 Tu Empresa</p>
     </footer>
+
+    <script>
+        function predict() {
+            generateJSON()
+            .then(data => {
+                console.log('JSON generado:', data);
+                return postData(data); // Llamamos a la función postData con los datos generados
+            })
+            .then(response => {
+                console.log('Respuesta del servidor:', response);
+                // Aquí puedes hacer lo que necesites con la respuesta del servidor
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                // Aquí puedes manejar cualquier error que ocurra durante el proceso
+            });
+        }
+
+        function generateJSON() {
+            return new Promise((resolve, reject) => {
+                var fileInput = document.getElementById('fileInput');
+                var confidenceThreshold = 0.5;
+                var maxPredictions = 5;
+
+                var file = fileInput.files[0];
+                if (!file) {
+                    reject('Por favor selecciona una imagen.');
+                    return;
+                }
+
+                var reader = new FileReader();
+                reader.onload = function(event) {
+                    var content = event.target.result.split(',')[1];
+                    var data = {
+                        "instances": [{
+                            "content": content
+                        }],
+                        "parameters": {
+                            "confidenceThreshold": confidenceThreshold,
+                            "maxPredictions": maxPredictions
+                        }
+                    };
+                    resolve(data);
+                };
+                reader.readAsDataURL(file);
+            });
+
+        function postData(data) {
+            // Aquí realiza la solicitud POST con los datos
+            // Puedes usar fetch, axios u otra biblioteca para realizar la solicitud
+            // Por simplicidad, supongamos que estamos usando fetch
+            return fetch('/prediction', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ requestData: data })
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Error al realizar la solicitud.');
+                }
+                return response.json();
+            });
+        }
+}
+    
+    </script>
 
     <script>
         document.getElementById('image-form').addEventListener('submit', function(event) {

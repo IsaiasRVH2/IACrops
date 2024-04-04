@@ -54,7 +54,7 @@ router.post('/', (req, res) => {
     
     // Verificar si imgPath se recibió en la solicitud POST
     if (imgPath && imgPath.trim() !== '') {
-        console.log(imgPath);
+        
         // Renderizar la plantilla EJS para la página de ayuda y pasar imgPath como variable
         res.render('ayuda', { imgPath: imgPath }, (err, html) => {
             if (err) {

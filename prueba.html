@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Interfaz para generar JSON</title>
+</head>
+<body>
+
+<h1>Interfaz para generar JSON</h1>
+
+<input type="file" id="fileInput" accept="image/*">
+<br>
+<label for="confidenceThreshold">Confidence Threshold:</label>
+<input type="number" id="confidenceThreshold" value="0.5">
+<br>
+<label for="maxPredictions">Max Predictions:</label>
+<input type="number" id="maxPredictions" value="5">
+<br>
+<button onclick="generateJSON()">Generar JSON</button>
+<br>
+<textarea id="jsonOutput" rows="10" cols="50" readonly></textarea>
+
+<script>
+function generateJSON() {
+    var fileInput = document.getElementById('fileInput');
+    var confidenceThreshold = parseFloat(document.getElementById('confidenceThreshold').value);
+    var maxPredictions = parseInt(document.getElementById('maxPredictions').value);
+    var jsonOutput = document.getElementById('jsonOutput');
+
+    var file = fileInput.files[0];
+    if (!file) {
+        alert('Por favor selecciona una imagen.');
+        return;
+    }
+
+    var reader = new FileReader();
+    reader.onload = function(event) {
+        var content = event.target.result.split(',')[1];
+        var data = {
+            "instances": [{
+                "content": content
+            }],
+            "parameters": {
+                "confidenceThreshold": confidenceThreshold,
+                "maxPredictions": maxPredictions
+            }
+        };
+        jsonOutput.value = JSON.stringify(data, null, 2);
+    };
+    reader.readAsDataURL(file);
+}
+</script>
+
+</body>
+</html>
