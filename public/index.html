@@ -25,29 +25,11 @@
     <script>
         document.getElementById('image-form').addEventListener('submit', function(event) {
             event.preventDefault(); // Evitar que se envíe el formulario automáticamente
-    
-            const imgPathInput = document.getElementById('image-input');
-            const imgPath = imgPathInput.value;
-    
-            if (imgPath.trim() !== '') {
-                // Si se ha ingresado un nombre de archivo, enviar solicitud POST a la página de informe
-                fetch('/rec_imagenes_dashboard', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'text/plain'
-                    },
-                    body: imgPath
-                })
-                .then(response => {
-                    // Redirigir a la página de informe cuando se haya enviado la respuesta
-                    window.location.href = '/rec_imagenes_dashboard';
-                })
-                .catch(error => console.error('Error al enviar la respuesta:', error));
-            } else {
-                console.log('Por favor, ingresa un nombre de archivo.');
-            }
+
+            const imageInput = document.getElementById('image-input');
+            
+            this.submit();
         });
     </script>
-    
 </body>
 </html>
