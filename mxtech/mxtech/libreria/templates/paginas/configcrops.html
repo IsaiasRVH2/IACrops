@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block contenido %}
+    <h1>Configuración de cultivos</h1>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="{% url 'dashboard' %}">Dashboard</a>
+        <a class="navbar-brand" href="{% url 'managecrops' %}">Manejo de cultivos</a>
+        <a class="navbar-brand" href="{% url 'gadgetscrops' %}">Gadgets</a>
+        
+    </nav>
+    
+    <h2>Introducir Dimensiones del Terreno y Clasificar Parcelas de Siembra</h2>
+    <form method="post" action="{% url 'guardar_configuracion' %}">
+        {% csrf_token %}
+        <label for="ancho">Ancho del terreno (metros):</label>
+        <input type="number" id="ancho" name="ancho">
+        <br>
+        <label for="largo">Largo del terreno (metros):</label>
+        <input type="number" id="largo" name="largo">
+        <br>
+        <label for="cosecha">Cosecha:</label>
+        <input type="text" id="cosecha" name="cosecha">
+        <br>
+        <button type="submit">Guardar</button>
+    </form>
+{% endblock %}

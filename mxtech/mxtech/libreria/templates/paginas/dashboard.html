@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block contenido %}
+    <h1>Dashboard</h1>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        
+        <a class="navbar-brand" href="{% url 'managecrops' %}">Manejo de cultivos</a>
+        <a class="navbar-brand" href="{% url 'configcrops' %}">Configuración de cultivos</a>
+        <a class="navbar-brand" href="{% url 'gadgetscrops' %}">Gadgets</a>
+        
+    </nav>
+{% endblock %}

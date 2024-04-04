@@ -1,0 +1,106 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block contenido %}
+    <h1>Gadgets</h1>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="{% url 'dashboard' %}">Dashboard</a>
+        <a class="navbar-brand" href="{% url 'managecrops' %}">Manejo de cultivos</a>
+        <a class="navbar-brand" href="{% url 'configcrops' %}">Configuración de cultivos</a>
+        
+    </nav>
+    
+    <h2>Seleccionar herramientas disponibles:</h2>
+    <form method="post" action="{% url 'guardar_herramientas' %}">
+        {% csrf_token %}
+        
+        <!-- Aquí incluye tus imágenes de herramientas como checkboxes -->
+        <label for="herramienta1">
+            <input type="checkbox" id="herramienta1" name="herramienta" value="herramienta1">
+            <img src="{% static 'img/herramienta1.jpg' %}" alt="Herramienta 1">
+        </label>
+        
+        <label for="herramienta2">
+            <input type="checkbox" id="herramienta2" name="herramienta" value="herramienta2">
+            <img src="{% static 'img/herramienta2.jpg' %}" alt="Herramienta 2">
+        </label>
+
+        <label for="herramienta3">
+            <input type="checkbox" id="herramienta3" name="herramienta" value="herramienta3">
+            <img src="{% static 'img/herramienta3.jpg' %}" alt="Herramienta 3">
+        </label>
+
+        <label for="herramienta4">
+            <input type="checkbox" id="herramienta4" name="herramienta" value="herramienta4">
+            <img src="{% static 'img/herramienta4.jpg' %}" alt="Herramienta 4">
+        </label>
+
+        <label for="herramienta5"></label>
+            <input type="checkbox" id="herramienta5" name="herramienta" value="herramienta5">
+            <img src="{% static 'img/herramienta5.jpg' %}" alt="Herramienta 5">
+        </label>
+
+        <label for="herramienta6">
+            <input type="checkbox" id="herramienta6" name="herramienta" value="herramienta6">
+            <img src="{% static 'img/herramienta6.jpg' %}" alt="Herramienta 6">
+        </label>
+
+        <label for="herramienta7">
+            <input type="checkbox" id="herramienta7" name="herramienta" value="herramienta7">
+            <img src="{% static 'img/herramienta7.jpg' %}" alt="Herramienta 7">
+        </label>
+
+        <label for="herramienta8">
+            <input type="checkbox" id="herramienta8" name="herramienta" value="herramienta8">
+            <img src="{% static 'img/herramienta8.jpg' %}" alt="Herramienta 8">
+        </label>
+
+        <label for="herramienta9">
+            <input type="checkbox" id="herramienta9" name="herramienta" value="herramienta9">
+            <img src="{% static 'img/herramienta9.jpg' %}" alt="Herramienta 9">
+        </label>
+
+        <label for="herramienta10">
+            <input type="checkbox" id="herramienta10" name="herramienta" value="herramienta10">
+            <img src="{% static 'img/herramienta10.jpg' %}" alt="Herramienta 10">
+        </label>
+
+        
+        
+
+        
+        <!-- Agrega más imágenes de herramientas si es necesario -->
+        
+        <div class="container">
+            <div class="row">
+                {% for i in imagenes %}
+                    <div class="col-md-6 mb-3">
+                        <label for="herramienta{{ forloop.counter }}">
+                            <input type="checkbox" id="herramienta{{ forloop.counter }}" name="herramienta" value="herramienta{{ forloop.counter }}">
+                            <div class="contenedor-imagen">
+                                <img src="{% static 'img/' %}{{ i }}" alt="Herramienta {{ forloop.counter }}">
+                            </div>
+                        </label>
+                    </div>
+                    {% if forloop.counter|divisibleby:2 %}
+            </div>
+            <div class="row">
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+        
+        <button type="submit" class="btn btn-primary">Guardar</button>
+    </form>
+
+    <style>
+        .contenedor-imagen {
+            max-width: 200px; /* Establece el ancho máximo del contenedor */
+        }
+
+        .contenedor-imagen img {
+            max-width: 100%; /* La imagen se ajustará automáticamente al ancho del contenedor */
+            height: auto; /* La altura se ajustará automáticamente para mantener la proporción de la imagen */
+        }
+    </style>
+{% endblock %}
