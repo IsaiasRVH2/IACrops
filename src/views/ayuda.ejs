@@ -3,24 +3,88 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ayuda - Chat con Google Generative AI</title>
+    <title>Chat con Google Generative AI</title>
     <style>
-        /* Estilos CSS */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            position: relative; /* Establece el cuerpo como un elemento relativo */
+            min-height: 100vh; /* Establece la altura mínima al 100% del viewport height */
+        }
+        #footer {
+            position: fixed; /* Fija el pie de página en la parte inferior de la pantalla */
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            background-color: #f9f9f9;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1); /* Agrega una sombra sutil en la parte superior */
+        }
+        textarea {
+            width: calc(100% - 120px); /* Ancho del textarea menos el ancho del botón */
+            height: 30px; /* Altura reducida para una sola línea */
+            resize: none; /* Deshabilita la redimensión */
+            border-radius: 5px; /* Añade bordes redondeados */
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px; /* Añade bordes redondeados */
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        #conversation {
+            max-height: calc(100vh - 160px); /* Altura máxima de la conversación (100% - altura del pie de página) */
+            overflow-y: auto; /* Habilita el desplazamiento vertical cuando el contenido excede la altura máxima */
+            padding: 0;
+            margin: 0;
+            list-style-type: none; /* Quita los estilos de lista */
+        }
+        .user-message,
+        .model-response {
+            margin-bottom: 10px;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        .user-message {
+            background-color: #f1f1f1;
+        }
+        .model-response {
+            background-color: #e0e0e0;
+        }
+        .bold {
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
-    <h1>Ayuda - Chat con Google Generative AI</h1>
+    <h1>Chat con Google Generative AI</h1>
     <ul id="conversation"></ul>
     <div id="footer">
-        <!-- Cuadro de texto para el mensaje del usuario -->
         <textarea id="userInput" placeholder="Escribe tu mensaje aquí"></textarea>
         <button onclick="sendMessage()">Enviar</button>
     </div>
 
-    <!-- Script para manejar la funcionalidad del chat -->
+    
     <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/3.0.2/marked.min.js"></script>
     <script>
-        // Función para enviar mensajes
+        var imgPath = '<%= typeof imgPath !== "undefined" ? imgPath : "" %>';
+
+        // Verificar si imgPath está definido
+        if (imgPath) {
+            // Si imgPath está definido, mostrar su valor
+            document.getElementById('userInput').value = imgPath;
+            sendMessage();
+        } 
+
         async function sendMessage() {
             const userInput = document.getElementById('userInput').value.trim();
             if (!userInput) {
@@ -30,30 +94,27 @@
 
             const conversation = document.getElementById('conversation');
 
-            // Crear elemento de mensaje de usuario y agregarlo a la conversación
             const userMessageItem = document.createElement('li');
             userMessageItem.classList.add('user-message');
             userMessageItem.innerHTML = `<span class="bold">Tú:</span><br>${userInput}`;
             conversation.appendChild(userMessageItem);
 
-            // Enviar solicitud POST al servidor para obtener la respuesta
-            const response = await fetch('/sendMessage', {
+            const response = await fetch('/ayuda/sendMessage', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({ message: userInput })
             });
-
             // Limpiar el cuadro de texto después de enviar el mensaje
             document.getElementById('userInput').value = '';
-
-            // Obtener la respuesta del servidor y agregarla a la conversación
             const responseData = await response.text();
             const modelResponseItem = document.createElement('li');
             modelResponseItem.classList.add('model-response');
             modelResponseItem.innerHTML = `<span class="bold">Javi:</span><br>${marked(responseData)}`;
             conversation.appendChild(modelResponseItem);
+
+            
 
             // Desplazar la conversación hacia abajo para mostrar la última respuesta
             conversation.scrollTop = conversation.scrollHeight;
@@ -65,11 +126,6 @@
                 sendMessage(); // Llama a sendMessage cuando se presiona Enter
             }
         });
-
-        // Llenar el cuadro de texto con imgPath si se recibe en la solicitud POST
-        <% if (imgPath) { %>
-            document.getElementById('userInput').value = '<%= imgPath %>';
-        <% } %>
     </script>
 </body>
 </html>

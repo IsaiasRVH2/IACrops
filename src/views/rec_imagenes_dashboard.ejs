@@ -15,29 +15,25 @@
         <div id="image-path">
             Ruta de la imagen: <%= imgPath %>
         </div>
+        
+        <form id="ayuda-form" action="/ayuda" method="post" style="display: none;">
+            <input type="hidden" name="img_path" id="img-path-input">
+        </form>
+        
         <button id="ayuda-button">Solicitar Ayuda</button>
+
     </main>
 
     <footer>
         <p>&copy; 2024 Tu Empresa</p>
     </footer>
-    <script>
-        // Definir una variable global de JavaScript para almacenar el valor de imgPath
-        const imgPath = '<%= imgPath %>';
-        
-    </script>
+    
+    
     <script>
         document.getElementById('ayuda-button').addEventListener('click', function() {
-            console.log(imgPath);
-            fetch('/ayuda', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ img_path: imgPath })
-                
-            })
-            .catch(error => console.error('Error al enviar solicitud de ayuda:', error));
+            const imgPath = '<%= imgPath %>';
+            document.getElementById('img-path-input').value = imgPath;
+            document.getElementById('ayuda-form').submit();
         });
     </script>
 </body>
